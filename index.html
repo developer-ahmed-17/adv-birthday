@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday My Love</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- 
+Background music -->
+<audio id="bg-music" autoplay loop>
+  <source src="tu_chahiye.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<!-- Preloader countdown -->
+<div id="preloader">
+  <div id="countdown-numbers">3</div>
+</div>
+
+<!-- Main content -->
+<div class="container" id="main-content" style="display:none;">
+  <h1>Happy Birthday In Advance My Love ❤️</h1>
+  <p>You make my world brighter every single day. This is for you!</p>
+
+  <div id="countdown"></div>
+
+  <div class="gallery">
+    <img src="my 3.jpeg" alt="Photo 1">
+    <img src="my 1.jpeg" alt="Photo 2">
+    <img src="my 2.jpeg" alt="Photo 3">
+  </div>
+
+  <div class="quotes">
+    <p>"You are the reason I believe in love 💖"</p>
+    <p>"Every moment with you is a gift I treasure."</p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+// 3...2...1 animation logic
+let count = 3;
+const countdownEl = document.getElementById("countdown-numbers");
+
+const timer = setInterval(() => {
+  count--;
+  if (count === 0) {
+    clearInterval(timer);
+    document.getElementById("preloader").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+  } else {
+    countdownEl.textContent = count;
+  }
+}, 1000);
+</script>
+
+</body>
+</html>
