@@ -73,17 +73,21 @@ p.lead{text-align:center;margin-bottom:18px;color:#666}
   </div>  <div class="container" id="main-content" style="display:none;">
     <h1>Happy Birthday My Love ❤️</h1>
     <p class="lead">You make my world brighter every single day. This is for you!</p><div class="stage">
-  <!-- Flip card: front = first photo, back = message + calendar -->
-  <div class="flip-card" id="flipCard" aria-live="polite">
+  <!-- Calendar shown first -->
+  <div class="calendar" id="calendar" style="max-width:340px;width:100%;margin-bottom:20px;"></div>
+
+  <!-- Flip card for rotating photos + rotating messages -->
+  <div class="flip-card" id="flipCard">
     <div class="flip-inner">
       <div class="side front" id="cardFront">
-        <img src="my 3.jpeg" alt="Photo 1">
+        <img id="dynamicPhoto" src="photo1.jpg" alt="Photo" />
       </div>
-      <div class="side back" id="cardBack">
-        <div class="message">
-          <div class="big">Happy Birthday! <span class="heart">💖</span></div>
-          <div class="small">May your day be filled with love, laughter and little surprises — just like you make my life.</div>
-        </div>
+      <div class="side back" id="cardBack" style="padding:25px;text-align:center;">
+        <div id="dynamicMessage" style="font-size:20px;color:#ff2d55;font-weight:600;line-height:1.4;"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
         <!-- Mini calendar for November with 17th highlighted -->
         <div class="calendar" id="calendar">
@@ -157,29 +161,40 @@ p.lead{text-align:center;margin-bottom:18px;color:#666}
       }
     })();
 
-    // Page flip loop: show front photo for a while, then flip to back (message+calendar), then flip back. Loop indefinitely.
+    // Page flip for rotating images + messages
     (function pageFlipLoop(){
       const flipCard = document.getElementById('flipCard');
-      const intervalFront = 3500; // show front for 3.5s
-      const intervalBack = 4200; // show back for 4.2s (gives time to read)
+      const photo = document.getElementById('dynamicPhoto');
+      const message = document.getElementById('dynamicMessage');
 
-      let isFlipped = false;
-      function flipToBack(){
-        flipCard.classList.add('flipped');
-        isFlipped = true;
-      }
-      function flipToFront(){
-        flipCard.classList.remove('flipped');
-        isFlipped = false;
+      const photos = ['photo1.jpg','photo2.jpg','photo3.jpg','photo4.jpg'];
+      const messages = [
+        'You make every moment magical 💖',
+        'My world is brighter because of you ✨',
+        'You are my today and all of my tomorrows ❤️',
+        'Your smile is my favorite place 💕'
+      ];
+
+      let index = 0;
+      const intervalFront = 3500;
+      const intervalBack = 4200;
+
+      function updateContent(){
+        photo.src = photos[index % photos.length];
+        message.textContent = messages[index % messages.length];
+        index++;
       }
 
-      // Start loop with small delay so the preloader is visible first
+      function flipToBack(){ flipCard.classList.add('flipped'); }
+      function flipToFront(){ flipCard.classList.remove('flipped'); }
+
+      updateContent();
       setTimeout(()=>{
         flipToFront();
         setInterval(()=>{
           flipToBack();
           setTimeout(()=>{
-            flipToFront();
+            flipToFront(); updateContent();
           }, intervalBack);
         }, intervalFront + intervalBack);
       }, 600);
@@ -194,4 +209,4 @@ p.lead{text-align:center;margin-bottom:18px;color:#666}
       window.addEventListener('click',enableAudio);
     })();
   </script></body>
-  </html>
+</html>
