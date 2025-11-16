@@ -1,212 +1,59 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Happy Birthday My Love</title>
-  <style>
-    /* Reset & base */
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; background: linear-gradient(180deg,#fff8fb,#fff0f6);color:#222}
-    a{color:inherit}/* Preloader */
-#preloader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.02));z-index:30}
-#countdown-numbers{font-size:clamp(36px,8vw,96px);font-weight:800;color:#ff2d55;animation:pop .6s ease}
-@keyframes pop{0%{transform:scale(.8);opacity:.2}100%{transform:scale(1);opacity:1}}
-
-/* Main container */
-.container{max-width:980px;margin:38px auto;padding:20px;border-radius:18px;background:rgba(255,255,255,.9);box-shadow:0 8px 30px rgba(12,12,20,.08)}
-h1{text-align:center;font-size:clamp(22px,4vw,38px);margin-bottom:6px}
-p.lead{text-align:center;margin-bottom:18px;color:#666}
-
-/* Flip card (page flip effect) */
-.stage{display:flex;gap:18px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
-.flip-card{width:320px;max-width:44vw;min-width:260px;height:420px;perspective:1200px}
-.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 900ms cubic-bezier(.2,.9,.3,1)}
-.flip-card.flipped .flip-inner{transform:rotateY(-180deg)}
-.side{position:absolute;inset:0;border-radius:12px;overflow:hidden;backface-visibility:hidden;box-shadow:0 10px 30px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center}
-.front{background:#000}
-.front img{width:100%;height:100%;object-fit:cover;display:block}
-.back{background:linear-gradient(180deg,#fff0f6,#fff8fb);transform:rotateY(180deg);padding:20px;flex-direction:column}
-
-.message{font-size:clamp(16px,2.2vw,20px);text-align:center;margin-top:10px;color:#333}
-.message .big{font-weight:700;color:#ff2d55;font-size:clamp(22px,3vw,28px)}
-.heart{font-size:26px;transform-origin:center;display:inline-block;animation:beat 1100ms infinite}
-@keyframes beat{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)} }
-
-/* Tiny instruction */
-.small{font-size:13px;color:#777;margin-top:10px}
-
-/* Calendar */
-.calendar{width:100%;max-width:300px;margin-top:18px;background:rgba(255,255,255,.95);border-radius:10px;padding:12px;border:1px solid rgba(0,0,0,.04)}
-.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.cal-month{font-weight:700;color:#333}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.cal-grid div{padding:8px;border-radius:8px;text-align:center;font-size:13px}
-.cal-weekday{color:#9aa0a6;font-weight:600}
-.cal-day{background:transparent;color:#444}
-.today{position:relative;background:linear-gradient(90deg,#fff0f6,#fff8fb);box-shadow:inset 0 0 0 1px rgba(0,0,0,.03)}
-.marked{background:linear-gradient(90deg,#fff4f6,#ffeef3);border:1px dashed rgba(255,45,85,.15);color:#ff2d55;font-weight:700;}
-.marked::after{content:'\2764';position:absolute;right:6px;top:6px;font-size:14px}
-/* make the special date show a hovering heart */
-.heart-mark{display:inline-block;margin-left:6px}
-
-/* Gallery (other pics) */
-.gallery{display:flex;gap:8px;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center}
-.thumb{width:86px;height:86px;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.06)}
-.thumb img{width:100%;height:100%;object-fit:cover}
-
-/* Responsive */
-@media (max-width:640px){
-  .stage{flex-direction:column;align-items:center}
-  .flip-card{height:360px}
-  .gallery{gap:10px}
-}
-
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Background music (unchanged) -->
-  <audio id="bg-music" autoplay loop>
-    <source src="tu_chahiye.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>  <!-- Preloader countdown (kept) -->  <div id="preloader">
-    <div id="countdown-numbers">3</div>
-  </div>  <div class="container" id="main-content" style="display:none;">
-    <h1>Happy Birthday My Love ❤️</h1>
-    <p class="lead">You make my world brighter every single day. This is for you!</p><div class="stage">
-  <!-- Calendar shown first -->
-  <div class="calendar" id="calendar" style="max-width:340px;width:100%;margin-bottom:20px;"></div>
+<!-- 
+Background music -->
+<audio id="bg-music" autoplay loop>
+  <source src="tu_chahiye.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<!-- Preloader countdown -->
+<div id="preloader">
+  <div id="countdown-numbers">3</div>
+</div>
 
-  <!-- Flip card for rotating photos + rotating messages -->
-  <div class="flip-card" id="flipCard">
-    <div class="flip-inner">
-      <div class="side front" id="cardFront">
-        <img id="dynamicPhoto" src="photo1.jpg" alt="Photo" />
-      </div>
-      <div class="side back" id="cardBack" style="padding:25px;text-align:center;">
-        <div id="dynamicMessage" style="font-size:20px;color:#ff2d55;font-weight:600;line-height:1.4;"></div>
-      </div>
-    </div>
+<!-- Main content -->
+<div class="container" id="main-content" style="display:none;">
+  <h1>Happy Birthday  My Love ❤️</h1>
+  <p>You make my world brighter every single day. This is for you!</p>
+
+  <div id="countdown"></div>
+
+  <div class="gallery">
+    <img src="my 3.jpeg" alt="Photo 1">
+    <img src="my 1.jpeg" alt="Photo 2">
+    <img src="my 2.jpeg" alt="Photo 3">
+  </div>
+
+  <div class="quotes">
+    <p>"You are the reason I believe in love 💖"</p>
+    <p>"Every moment with you is a gift I treasure."</p>
   </div>
 </div>
 
-        <!-- Mini calendar for November with 17th highlighted -->
-        <div class="calendar" id="calendar">
-          <div class="cal-head">
-            <div class="cal-month">November 17</div>
-            <div class="cal-note">🎉 <small>Save the date</small></div>
-          </div>
-          <div class="cal-grid" id="calGrid">
-            <!-- Weekdays + days will be injected by JS -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<script src="script.js"></script>
+<script>
+// 3...2...1 animation logic
+let count = 3;
+const countdownEl = document.getElementById("countdown-numbers");
 
-  <!-- Gallery thumbnails (small) -->
-  <div>
-    <div class="gallery" aria-hidden="false">
-      <div class="thumb"><img src="my 1.jpeg" alt="Photo 2"></div>
-      <div class="thumb"><img src="my 2.jpeg" alt="Photo 3"></div>
-    </div>
-  </div>
-</div>
+const timer = setInterval(() => {
+  count--;
+  if (count === 0) {
+    clearInterval(timer);
+    document.getElementById("preloader").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+  } else {
+    countdownEl.textContent = count;
+  }
+}, 1000);
+</script>
 
-<div class="quotes" style="margin-top:18px;text-align:center;color:#555">
-  <p>"You are the reason I believe in love 💖"</p>
-  <p>"Every moment with you is a gift I treasure."</p>
-</div>
-
-  </div>  <script>
-    // Preloader countdown (kept, with slight safety: only run once)
-    (function(){
-      let count = 3;
-      const countdownEl = document.getElementById('countdown-numbers');
-      const timer = setInterval(()=>{
-        count--;
-        if(count === 0){
-          clearInterval(timer);
-          document.getElementById('preloader').style.display = 'none';
-          document.getElementById('main-content').style.display = 'block';
-        } else {
-          countdownEl.textContent = count;
-        }
-      },1000);
-    })();
-
-    // Build a mini calendar for November and highlight 17th with a heart
-    (function renderCalendar(){
-      const calGrid = document.getElementById('calGrid');
-      const weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      // header weekdays
-      for(let wd of weekdays){
-        const el = document.createElement('div'); el.className='cal-weekday'; el.textContent = wd; calGrid.appendChild(el);
-      }
-
-      // We'll render November of the current year (or use 2025 if you'd like fixed)
-      const year = new Date().getFullYear();
-      const monthIndex = 10 - 1; // November (0-based index -> 10)
-      const first = new Date(year, monthIndex, 1);
-      const daysInMonth = new Date(year, monthIndex+1, 0).getDate();
-      const startDay = first.getDay();
-
-      // empty slots before first day
-      for(let i=0;i<startDay;i++){ const e=document.createElement('div'); e.className='cal-day'; e.textContent=''; calGrid.appendChild(e); }
-
-      for(let d=1; d<=daysInMonth; d++){
-        const e=document.createElement('div'); e.className='cal-day'; e.textContent = d;
-        // highlight 17th
-        if(d===17){ e.classList.add('marked'); /* add heart visually */ const heart=document.createElement('span'); heart.className='heart-mark'; heart.textContent=' ❤️'; e.appendChild(heart);} 
-        calGrid.appendChild(e);
-      }
-    })();
-
-    // Page flip for rotating images + messages
-    (function pageFlipLoop(){
-      const flipCard = document.getElementById('flipCard');
-      const photo = document.getElementById('dynamicPhoto');
-      const message = document.getElementById('dynamicMessage');
-
-      const photos = ['photo1.jpg','photo2.jpg','photo3.jpg','photo4.jpg'];
-      const messages = [
-        'You make every moment magical 💖',
-        'My world is brighter because of you ✨',
-        'You are my today and all of my tomorrows ❤️',
-        'Your smile is my favorite place 💕'
-      ];
-
-      let index = 0;
-      const intervalFront = 3500;
-      const intervalBack = 4200;
-
-      function updateContent(){
-        photo.src = photos[index % photos.length];
-        message.textContent = messages[index % messages.length];
-        index++;
-      }
-
-      function flipToBack(){ flipCard.classList.add('flipped'); }
-      function flipToFront(){ flipCard.classList.remove('flipped'); }
-
-      updateContent();
-      setTimeout(()=>{
-        flipToFront();
-        setInterval(()=>{
-          flipToBack();
-          setTimeout(()=>{
-            flipToFront(); updateContent();
-          }, intervalBack);
-        }, intervalFront + intervalBack);
-      }, 600);
-    })();
-
-    // Accessibility: pause music on user interaction request (autoplay might be blocked on some devices)
-    (function addMusicToggle(){
-      const audio = document.getElementById('bg-music');
-      // create simple toggle when user taps anywhere first time (to comply with mobile autoplay rules)
-      let listened=false;
-      function enableAudio(){ if(listened) return; try{ audio.play(); }catch(e){} listened=true; window.removeEventListener('click',enableAudio); }
-      window.addEventListener('click',enableAudio);
-    })();
-  </script></body>
+</body>
 </html>
